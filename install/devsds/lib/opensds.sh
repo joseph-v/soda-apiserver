@@ -26,7 +26,7 @@ osds:opensds:configuration(){
 cp $OPENSDS_DIR/openapi-spec/swagger.yaml $OPENSDS_CONFIG_DIR
 
 # Set global configuration.
-cat >> $OPENSDS_CONFIG_DIR/opensds.conf << OPENSDS_GLOBAL_CONFIG_DOC
+cat >> $OPENSDS_CONFIG_DIR/soda-apiserver.conf << OPENSDS_GLOBAL_CONFIG_DOC
 [osdsapiserver]
 api_endpoint = 0.0.0.0:50040
 auth_strategy = $OPENSDS_AUTH_STRATEGY

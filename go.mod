@@ -1,4 +1,4 @@
-module github.com/opensds/opensds
+module github.com/opensds/soda-apiserver
 
 go 1.12
 
