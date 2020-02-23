@@ -28,16 +28,16 @@ func init() {
 
 			// Volume is the logical description of a piece of storage, which can be directly used by users.
 			// All operations of volume can be used for both admin and users.
-			beego.NSRouter("/volumes", &controllers.VolumePortal{}, "post:CreateVolume;get:ListVolumes"),
-			//beego.NSRouter("/volumes/:volumeId", controllers.NewVolumePortal(), "get:GetVolume;put:UpdateVolume;delete:DeleteVolume"),
-			//// Extend Volume
-			//beego.NSRouter("/volumes/:volumeId/resize", controllers.NewVolumePortal(), "post:ExtendVolume"),
-			//
-			//// Snapshot is a point-in-time copy of the data that a volume contains.
-			//// Creates, shows, lists, unpdates and deletes snapshot.
-			//beego.NSRouter("/snapshots", controllers.NewVolumeSnapshotPortal(), "post:CreateVolumeSnapshot;get:ListVolumeSnapshots"),
-			//beego.NSRouter("/snapshots/:snapshotId", controllers.NewVolumeSnapshotPortal(), "get:GetVolumeSnapshot;put:UpdateVolumeSnapshot;delete:DeleteVolumeSnapshot"),
-			//
+			beego.NSRouter("/volumes", controllers.NewVolumePortal(), "post:CreateVolume;get:ListVolumes"),
+			beego.NSRouter("/volumes/:volumeId", controllers.NewVolumePortal(), "get:GetVolume;put:UpdateVolume;delete:DeleteVolume"),
+			// Extend Volume
+			beego.NSRouter("/volumes/:volumeId/resize", controllers.NewVolumePortal(), "post:ExtendVolume"),
+
+			// Snapshot is a point-in-time copy of the data that a volume contains.
+			// Creates, shows, lists, unpdates and deletes snapshot.
+			beego.NSRouter("/snapshots", controllers.NewVolumeSnapshotPortal(), "post:CreateVolumeSnapshot;get:ListVolumeSnapshots"),
+			beego.NSRouter("/snapshots/:snapshotId", controllers.NewVolumeSnapshotPortal(), "get:GetVolumeSnapshot;put:UpdateVolumeSnapshot;delete:DeleteVolumeSnapshot"),
+
 			//// Creates, shows, lists, unpdates and deletes replication.
 			//beego.NSRouter("/replications", controllers.NewReplicationPortal(), "post:CreateReplication;get:ListReplications"),
 			//beego.NSRouter("/replications/detail", controllers.NewReplicationPortal(), "get:ListReplicationsDetail"),

@@ -20,7 +20,7 @@ This module implements a entry into the OpenSDS northbound service.
 package controllers
 
 import (
-	//"context"
+	"context"
 	"encoding/json"
 	"fmt"
 
@@ -28,23 +28,23 @@ import (
 	"github.com/opensds/soda-apiserver/pkg/api/policy"
 	"github.com/opensds/soda-apiserver/pkg/api/util"
 	c "github.com/opensds/soda-apiserver/pkg/context"
-	//"github.com/opensds/soda-apiserver/pkg/controller/client"
+	"github.com/opensds/soda-apiserver/pkg/api/controllerclient"
 	"github.com/opensds/soda-apiserver/pkg/db"
 	"github.com/opensds/soda-apiserver/pkg/model"
 	pb "github.com/opensds/soda-apiserver/pkg/model/proto"
-	//. "github.com/opensds/soda-apiserver/pkg/utils/config"
+	. "github.com/opensds/soda-apiserver/pkg/utils/config"
 )
 
-//func NewVolumePortal() *VolumePortal {
-//	return &VolumePortal{
-//		CtrClient: client.NewClient(),
-//	}
-//}
+func NewVolumePortal() *VolumePortal {
+	return &VolumePortal{
+		CtrClient: client.NewClient(),
+	}
+}
 
 type VolumePortal struct {
 	BasePortal
 
-	//CtrClient client.Client
+	CtrClient client.Client
 }
 
 func (v *VolumePortal) CreateVolume() {
@@ -105,10 +105,10 @@ func (v *VolumePortal) CreateVolume() {
 	// NOTE:The real volume creation process.
 	// Volume creation request is sent to the Dock. Dock will update volume status to "available"
 	// after volume creation is completed.
-	//if err := v.CtrClient.Connect(CONF.OsdsLet.ApiEndpoint); err != nil {
-	//	log.Error("when connecting controller client:", err)
-	//	return
-	//}
+	if err := v.CtrClient.Connect(CONF.OsdsLet.ApiEndpoint); err != nil {
+		log.Error("when connecting controller client:", err)
+		return
+	}
 
 	opt := &pb.CreateVolumeOpts{
 		Id:               result.Id,
@@ -125,16 +125,16 @@ func (v *VolumePortal) CreateVolume() {
 		SnapshotFromCloud: result.SnapshotFromCloud,
 		Context:           ctx.ToJson(),
 	}
-	//response, err := v.CtrClient.CreateVolume(context.Background(), opt)
-	//if err != nil {
-	//	log.Error("create volume failed in controller service:", err)
-	//	return
-	//}
-	//if errorMsg := response.GetError(); errorMsg != nil {
-	//	log.Errorf("failed to create volume in controller, code: %v, message: %v",
-	//		errorMsg.GetCode(), errorMsg.GetDescription())
-	//	return
-	//}
+	response, err := v.CtrClient.CreateVolume(context.Background(), opt)
+	if err != nil {
+		log.Error("create volume failed in controller service:", err)
+		return
+	}
+	if errorMsg := response.GetError(); errorMsg != nil {
+		log.Errorf("failed to create volume in controller, code: %v, message: %v",
+			errorMsg.GetCode(), errorMsg.GetDescription())
+		return
+	}
     fmt.Println("opt==:",opt)
 	return
 }
@@ -261,10 +261,10 @@ func (v *VolumePortal) ExtendVolume() {
 	// NOTE:The real volume extension process.
 	// Volume extension request is sent to the Dock. Dock will update volume status to "available"
 	// after volume extension is completed.
-	//if err = v.CtrClient.Connect(CONF.OsdsLet.ApiEndpoint); err != nil {
-	//	log.Error("when connecting controller client:", err)
-	//	return
-	//}
+	if err = v.CtrClient.Connect(CONF.OsdsLet.ApiEndpoint); err != nil {
+		log.Error("when connecting controller client:", err)
+		return
+	}
 
 	opt := &pb.ExtendVolumeOpts{
 		Id:       id,
@@ -273,16 +273,16 @@ func (v *VolumePortal) ExtendVolume() {
 		Context:  ctx.ToJson(),
 		Profile:  prf.ToJson(),
 	}
-	//response, err := v.CtrClient.ExtendVolume(context.Background(), opt)
-	//if err != nil {
-	//	log.Error("extend volume failed in controller service:", err)
-	//	return
-	//}
-	//if errorMsg := response.GetError(); errorMsg != nil {
-	//	log.Errorf("failed to extend volume in controller, code: %v, message: %v",
-	//		errorMsg.GetCode(), errorMsg.GetDescription())
-	//	return
-	//}
+	response, err := v.CtrClient.ExtendVolume(context.Background(), opt)
+	if err != nil {
+		log.Error("extend volume failed in controller service:", err)
+		return
+	}
+	if errorMsg := response.GetError(); errorMsg != nil {
+		log.Errorf("failed to extend volume in controller, code: %v, message: %v",
+			errorMsg.GetCode(), errorMsg.GetDescription())
+		return
+	}
 	fmt.Println("opt==:",opt)
 	return
 }
@@ -336,10 +336,10 @@ func (v *VolumePortal) DeleteVolume() {
 	// NOTE:The real volume deletion process.
 	// Volume deletion request is sent to the Dock. Dock will delete volume from driver
 	// and database or update volume status to "errorDeleting" if deletion from driver faild.
-	//if err := v.CtrClient.Connect(CONF.OsdsLet.ApiEndpoint); err != nil {
-	//	log.Error("when connecting controller client:", err)
-	//	return
-	//}
+	if err := v.CtrClient.Connect(CONF.OsdsLet.ApiEndpoint); err != nil {
+		log.Error("when connecting controller client:", err)
+		return
+	}
 
 	opt := &pb.DeleteVolumeOpts{
 		Id:        volume.Id,
@@ -349,243 +349,243 @@ func (v *VolumePortal) DeleteVolume() {
 		Context:   ctx.ToJson(),
 		Profile:   prf.ToJson(),
 	}
-	//response, err := v.CtrClient.DeleteVolume(context.Background(), opt)
-	//if err != nil {
-	//	log.Error("delete volume failed in controller service:", err)
-	//	return
-	//}
-	//if errorMsg := response.GetError(); errorMsg != nil {
-	//	log.Errorf("failed to delete volume in controller, code: %v, message: %v",
-	//		errorMsg.GetCode(), errorMsg.GetDescription())
-	//	return
-	//}
+	response, err := v.CtrClient.DeleteVolume(context.Background(), opt)
+	if err != nil {
+		log.Error("delete volume failed in controller service:", err)
+		return
+	}
+	if errorMsg := response.GetError(); errorMsg != nil {
+		log.Errorf("failed to delete volume in controller, code: %v, message: %v",
+			errorMsg.GetCode(), errorMsg.GetDescription())
+		return
+	}
 	fmt.Println("opt==:",opt)
 	return
 }
 
-//func NewVolumeSnapshotPortal() *VolumeSnapshotPortal {
-//	return &VolumeSnapshotPortal{
-//		CtrClient: client.NewClient(),
-//	}
-//}
-//
-//type VolumeSnapshotPortal struct {
-//	BasePortal
-//
-//	CtrClient client.Client
-//}
-//
-//func (v *VolumeSnapshotPortal) CreateVolumeSnapshot() {
-//	if !policy.Authorize(v.Ctx, "snapshot:create") {
-//		return
-//	}
-//	ctx := c.GetContext(v.Ctx)
-//	var snapshot = model.VolumeSnapshotSpec{
-//		BaseModel: &model.BaseModel{},
-//	}
-//
-//	if err := json.NewDecoder(v.Ctx.Request.Body).Decode(&snapshot); err != nil {
-//		errMsg := fmt.Sprintf("parse volume snapshot request body failed: %s", err.Error())
-//		v.ErrorHandle(model.ErrorBadRequest, errMsg)
-//		return
-//	}
-//
-//	// If user doesn't specified profile, using profile derived from volume
-//	if len(snapshot.ProfileId) == 0 {
-//		log.Warning("User doesn't specified profile id, using profile derived from volume")
-//		vol, err := db.C.GetVolume(ctx, snapshot.VolumeId)
-//		if err != nil {
-//			v.ErrorHandle(model.ErrorBadRequest, err.Error())
-//			return
-//		}
-//		snapshot.ProfileId = vol.ProfileId
-//	}
-//	prf, err := db.C.GetProfile(ctx, snapshot.ProfileId)
-//	if err != nil {
-//		errMsg := fmt.Sprintf("get profile failed: %s", err.Error())
-//		v.ErrorHandle(model.ErrorBadRequest, errMsg)
-//		return
-//	}
-//
-//	// NOTE:It will create a volume snapshot entry into the database and initialize its status
-//	// as "creating". It will not wait for the real volume snapshot creation to complete
-//	// and will return result immediately.
-//	result, err := util.CreateVolumeSnapshotDBEntry(ctx, &snapshot)
-//	if err != nil {
-//		errMsg := fmt.Sprintf("create volume snapshot failed: %s", err.Error())
-//		v.ErrorHandle(model.ErrorBadRequest, errMsg)
-//		return
-//	}
-//
-//	// Marshal the result.
-//	body, _ := json.Marshal(result)
-//	v.SuccessHandle(StatusAccepted, body)
-//
-//	// NOTE:The real volume snapshot creation process.
-//	// Volume snapshot creation request is sent to the Dock. Dock will update volume snapshot status to "available"
-//	// after volume snapshot creation complete.
-//	if err := v.CtrClient.Connect(CONF.OsdsLet.ApiEndpoint); err != nil {
-//		log.Error("when connecting controller client:", err)
-//		return
-//	}
-//
-//	opt := &pb.CreateVolumeSnapshotOpts{
-//		Id:          result.Id,
-//		Name:        result.Name,
-//		Description: result.Description,
-//		VolumeId:    result.VolumeId,
-//		Size:        result.Size,
-//		Metadata:    result.Metadata,
-//		Context:     ctx.ToJson(),
-//		Profile:     prf.ToJson(),
-//	}
-//	response, err := v.CtrClient.CreateVolumeSnapshot(context.Background(), opt)
-//	if err != nil {
-//		log.Error("create volume snapthot failed in controller service:", err)
-//		return
-//	}
-//	if errorMsg := response.GetError(); errorMsg != nil {
-//		log.Errorf("failed to create volume snapshot in controller, code: %v, message: %v",
-//			errorMsg.GetCode(), errorMsg.GetDescription())
-//		return
-//	}
-//
-//	return
-//}
-//
-//func (v *VolumeSnapshotPortal) ListVolumeSnapshots() {
-//	if !policy.Authorize(v.Ctx, "snapshot:list") {
-//		return
-//	}
-//	m, err := v.GetParameters()
-//	if err != nil {
-//		errMsg := fmt.Sprintf("list volume snapshots failed: %s", err.Error())
-//		v.ErrorHandle(model.ErrorBadRequest, errMsg)
-//		return
-//	}
-//
-//	result, err := db.C.ListVolumeSnapshotsWithFilter(c.GetContext(v.Ctx), m)
-//	if err != nil {
-//		errMsg := fmt.Sprintf("list volume snapshots failed: %s", err.Error())
-//		v.ErrorHandle(model.ErrorInternalServer, errMsg)
-//		return
-//	}
-//
-//	// Marshal the result.
-//	body, _ := json.Marshal(result)
-//	v.SuccessHandle(StatusOK, body)
-//
-//	return
-//}
-//
-//func (v *VolumeSnapshotPortal) GetVolumeSnapshot() {
-//	if !policy.Authorize(v.Ctx, "snapshot:get") {
-//		return
-//	}
-//	id := v.Ctx.Input.Param(":snapshotId")
-//
-//	result, err := db.C.GetVolumeSnapshot(c.GetContext(v.Ctx), id)
-//	if err != nil {
-//		errMsg := fmt.Sprintf("volume snapshot %s not found: %s", id, err.Error())
-//		v.ErrorHandle(model.ErrorNotFound, errMsg)
-//		return
-//	}
-//
-//	// Marshal the result.
-//	body, _ := json.Marshal(result)
-//	v.SuccessHandle(StatusOK, body)
-//
-//	return
-//}
-//
-//func (v *VolumeSnapshotPortal) UpdateVolumeSnapshot() {
-//	if !policy.Authorize(v.Ctx, "snapshot:update") {
-//		return
-//	}
-//	var snapshot = model.VolumeSnapshotSpec{
-//		BaseModel: &model.BaseModel{},
-//	}
-//
-//	id := v.Ctx.Input.Param(":snapshotId")
-//
-//	if err := json.NewDecoder(v.Ctx.Request.Body).Decode(&snapshot); err != nil {
-//		errMsg := fmt.Sprintf("parse volume snapshot request body failed: %s", err.Error())
-//		v.ErrorHandle(model.ErrorBadRequest, errMsg)
-//		return
-//	}
-//	snapshot.Id = id
-//
-//	result, err := db.C.UpdateVolumeSnapshot(c.GetContext(v.Ctx), id, &snapshot)
-//	if err != nil {
-//		errMsg := fmt.Sprintf("update volume snapshot failed: %s", err.Error())
-//		v.ErrorHandle(model.ErrorInternalServer, errMsg)
-//		return
-//	}
-//
-//	// Marshal the result.
-//	body, _ := json.Marshal(result)
-//	v.SuccessHandle(StatusOK, body)
-//
-//	return
-//}
-//
-//func (v *VolumeSnapshotPortal) DeleteVolumeSnapshot() {
-//	if !policy.Authorize(v.Ctx, "snapshot:delete") {
-//		return
-//	}
-//	ctx := c.GetContext(v.Ctx)
-//	id := v.Ctx.Input.Param(":snapshotId")
-//
-//	snapshot, err := db.C.GetVolumeSnapshot(ctx, id)
-//	if err != nil {
-//		errMsg := fmt.Sprintf("volume snapshot %s not found: %s", id, err.Error())
-//		v.ErrorHandle(model.ErrorNotFound, errMsg)
-//		return
-//	}
-//
-//	prf, err := db.C.GetProfile(ctx, snapshot.ProfileId)
-//	if err != nil {
-//		errMsg := fmt.Sprintf("delete snapshot failed: %v", err.Error())
-//		v.ErrorHandle(model.ErrorBadRequest, errMsg)
-//		return
-//	}
-//
-//	// NOTE:It will update the the status of the volume snapshot waiting for deletion in
-//	// the database to "deleting" and return the result immediately.
-//	err = util.DeleteVolumeSnapshotDBEntry(ctx, snapshot)
-//	if err != nil {
-//		errMsg := fmt.Sprintf("delete volume snapshot failed: %v", err.Error())
-//		v.ErrorHandle(model.ErrorBadRequest, errMsg)
-//		return
-//	}
-//
-//	v.SuccessHandle(StatusAccepted, nil)
-//
-//	// NOTE:The real volume snapshot deletion process.
-//	// Volume snapshot deletion request is sent to the Dock. Dock will delete volume snapshot from driver and
-//	// database or update its status to "errorDeleting" if volume snapshot deletion from driver failed.
-//	if err := v.CtrClient.Connect(CONF.OsdsLet.ApiEndpoint); err != nil {
-//		log.Error("when connecting controller client:", err)
-//		return
-//	}
-//
-//	opt := &pb.DeleteVolumeSnapshotOpts{
-//		Id:       snapshot.Id,
-//		VolumeId: snapshot.VolumeId,
-//		Metadata: snapshot.Metadata,
-//		Context:  ctx.ToJson(),
-//		Profile:  prf.ToJson(),
-//	}
-//	response, err := v.CtrClient.DeleteVolumeSnapshot(context.Background(), opt)
-//	if err != nil {
-//		log.Error("delete volume snapthot failed in controller service:", err)
-//		return
-//	}
-//	if errorMsg := response.GetError(); errorMsg != nil {
-//		log.Errorf("failed to delete volume snapshot in controller, code: %v, message: %v",
-//			errorMsg.GetCode(), errorMsg.GetDescription())
-//		return
-//	}
-//
-//	return
-//}
+func NewVolumeSnapshotPortal() *VolumeSnapshotPortal {
+	return &VolumeSnapshotPortal{
+		CtrClient: client.NewClient(),
+	}
+}
+
+type VolumeSnapshotPortal struct {
+	BasePortal
+
+	CtrClient client.Client
+}
+
+func (v *VolumeSnapshotPortal) CreateVolumeSnapshot() {
+	if !policy.Authorize(v.Ctx, "snapshot:create") {
+		return
+	}
+	ctx := c.GetContext(v.Ctx)
+	var snapshot = model.VolumeSnapshotSpec{
+		BaseModel: &model.BaseModel{},
+	}
+
+	if err := json.NewDecoder(v.Ctx.Request.Body).Decode(&snapshot); err != nil {
+		errMsg := fmt.Sprintf("parse volume snapshot request body failed: %s", err.Error())
+		v.ErrorHandle(model.ErrorBadRequest, errMsg)
+		return
+	}
+
+	// If user doesn't specified profile, using profile derived from volume
+	if len(snapshot.ProfileId) == 0 {
+		log.Warning("User doesn't specified profile id, using profile derived from volume")
+		vol, err := db.C.GetVolume(ctx, snapshot.VolumeId)
+		if err != nil {
+			v.ErrorHandle(model.ErrorBadRequest, err.Error())
+			return
+		}
+		snapshot.ProfileId = vol.ProfileId
+	}
+	prf, err := db.C.GetProfile(ctx, snapshot.ProfileId)
+	if err != nil {
+		errMsg := fmt.Sprintf("get profile failed: %s", err.Error())
+		v.ErrorHandle(model.ErrorBadRequest, errMsg)
+		return
+	}
+
+	// NOTE:It will create a volume snapshot entry into the database and initialize its status
+	// as "creating". It will not wait for the real volume snapshot creation to complete
+	// and will return result immediately.
+	result, err := util.CreateVolumeSnapshotDBEntry(ctx, &snapshot)
+	if err != nil {
+		errMsg := fmt.Sprintf("create volume snapshot failed: %s", err.Error())
+		v.ErrorHandle(model.ErrorBadRequest, errMsg)
+		return
+	}
+
+	// Marshal the result.
+	body, _ := json.Marshal(result)
+	v.SuccessHandle(StatusAccepted, body)
+
+	// NOTE:The real volume snapshot creation process.
+	// Volume snapshot creation request is sent to the Dock. Dock will update volume snapshot status to "available"
+	// after volume snapshot creation complete.
+	if err := v.CtrClient.Connect(CONF.OsdsLet.ApiEndpoint); err != nil {
+		log.Error("when connecting controller client:", err)
+		return
+	}
+
+	opt := &pb.CreateVolumeSnapshotOpts{
+		Id:          result.Id,
+		Name:        result.Name,
+		Description: result.Description,
+		VolumeId:    result.VolumeId,
+		Size:        result.Size,
+		Metadata:    result.Metadata,
+		Context:     ctx.ToJson(),
+		Profile:     prf.ToJson(),
+	}
+	response, err := v.CtrClient.CreateVolumeSnapshot(context.Background(), opt)
+	if err != nil {
+		log.Error("create volume snapthot failed in controller service:", err)
+		return
+	}
+	if errorMsg := response.GetError(); errorMsg != nil {
+		log.Errorf("failed to create volume snapshot in controller, code: %v, message: %v",
+			errorMsg.GetCode(), errorMsg.GetDescription())
+		return
+	}
+
+	return
+}
+
+func (v *VolumeSnapshotPortal) ListVolumeSnapshots() {
+	if !policy.Authorize(v.Ctx, "snapshot:list") {
+		return
+	}
+	m, err := v.GetParameters()
+	if err != nil {
+		errMsg := fmt.Sprintf("list volume snapshots failed: %s", err.Error())
+		v.ErrorHandle(model.ErrorBadRequest, errMsg)
+		return
+	}
+
+	result, err := db.C.ListVolumeSnapshotsWithFilter(c.GetContext(v.Ctx), m)
+	if err != nil {
+		errMsg := fmt.Sprintf("list volume snapshots failed: %s", err.Error())
+		v.ErrorHandle(model.ErrorInternalServer, errMsg)
+		return
+	}
+
+	// Marshal the result.
+	body, _ := json.Marshal(result)
+	v.SuccessHandle(StatusOK, body)
+
+	return
+}
+
+func (v *VolumeSnapshotPortal) GetVolumeSnapshot() {
+	if !policy.Authorize(v.Ctx, "snapshot:get") {
+		return
+	}
+	id := v.Ctx.Input.Param(":snapshotId")
+
+	result, err := db.C.GetVolumeSnapshot(c.GetContext(v.Ctx), id)
+	if err != nil {
+		errMsg := fmt.Sprintf("volume snapshot %s not found: %s", id, err.Error())
+		v.ErrorHandle(model.ErrorNotFound, errMsg)
+		return
+	}
+
+	// Marshal the result.
+	body, _ := json.Marshal(result)
+	v.SuccessHandle(StatusOK, body)
+
+	return
+}
+
+func (v *VolumeSnapshotPortal) UpdateVolumeSnapshot() {
+	if !policy.Authorize(v.Ctx, "snapshot:update") {
+		return
+	}
+	var snapshot = model.VolumeSnapshotSpec{
+		BaseModel: &model.BaseModel{},
+	}
+
+	id := v.Ctx.Input.Param(":snapshotId")
+
+	if err := json.NewDecoder(v.Ctx.Request.Body).Decode(&snapshot); err != nil {
+		errMsg := fmt.Sprintf("parse volume snapshot request body failed: %s", err.Error())
+		v.ErrorHandle(model.ErrorBadRequest, errMsg)
+		return
+	}
+	snapshot.Id = id
+
+	result, err := db.C.UpdateVolumeSnapshot(c.GetContext(v.Ctx), id, &snapshot)
+	if err != nil {
+		errMsg := fmt.Sprintf("update volume snapshot failed: %s", err.Error())
+		v.ErrorHandle(model.ErrorInternalServer, errMsg)
+		return
+	}
+
+	// Marshal the result.
+	body, _ := json.Marshal(result)
+	v.SuccessHandle(StatusOK, body)
+
+	return
+}
+
+func (v *VolumeSnapshotPortal) DeleteVolumeSnapshot() {
+	if !policy.Authorize(v.Ctx, "snapshot:delete") {
+		return
+	}
+	ctx := c.GetContext(v.Ctx)
+	id := v.Ctx.Input.Param(":snapshotId")
+
+	snapshot, err := db.C.GetVolumeSnapshot(ctx, id)
+	if err != nil {
+		errMsg := fmt.Sprintf("volume snapshot %s not found: %s", id, err.Error())
+		v.ErrorHandle(model.ErrorNotFound, errMsg)
+		return
+	}
+
+	prf, err := db.C.GetProfile(ctx, snapshot.ProfileId)
+	if err != nil {
+		errMsg := fmt.Sprintf("delete snapshot failed: %v", err.Error())
+		v.ErrorHandle(model.ErrorBadRequest, errMsg)
+		return
+	}
+
+	// NOTE:It will update the the status of the volume snapshot waiting for deletion in
+	// the database to "deleting" and return the result immediately.
+	err = util.DeleteVolumeSnapshotDBEntry(ctx, snapshot)
+	if err != nil {
+		errMsg := fmt.Sprintf("delete volume snapshot failed: %v", err.Error())
+		v.ErrorHandle(model.ErrorBadRequest, errMsg)
+		return
+	}
+
+	v.SuccessHandle(StatusAccepted, nil)
+
+	// NOTE:The real volume snapshot deletion process.
+	// Volume snapshot deletion request is sent to the Dock. Dock will delete volume snapshot from driver and
+	// database or update its status to "errorDeleting" if volume snapshot deletion from driver failed.
+	if err := v.CtrClient.Connect(CONF.OsdsLet.ApiEndpoint); err != nil {
+		log.Error("when connecting controller client:", err)
+		return
+	}
+
+	opt := &pb.DeleteVolumeSnapshotOpts{
+		Id:       snapshot.Id,
+		VolumeId: snapshot.VolumeId,
+		Metadata: snapshot.Metadata,
+		Context:  ctx.ToJson(),
+		Profile:  prf.ToJson(),
+	}
+	response, err := v.CtrClient.DeleteVolumeSnapshot(context.Background(), opt)
+	if err != nil {
+		log.Error("delete volume snapthot failed in controller service:", err)
+		return
+	}
+	if errorMsg := response.GetError(); errorMsg != nil {
+		log.Errorf("failed to delete volume snapshot in controller, code: %v, message: %v",
+			errorMsg.GetCode(), errorMsg.GetDescription())
+		return
+	}
+
+	return
+}

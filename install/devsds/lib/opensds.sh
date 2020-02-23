@@ -58,6 +58,8 @@ osds::opensds::install(){
 (
     cd ${OPENSDS_DIR}
     sudo build/out/bin/osdsapiserver --daemon
+    sudo /root/gopath/src/github.com/opensds/soda-dock/build/out/bin/osdsdock --daemon
+    sudo /root/gopath/src/github.com/opensds/soda-controller/build/out/bin/osdslet --daemon
 
     osds::echo_summary "Waiting for osdsapiserver to come up."
     osds::util::wait_for_url localhost:50040 "osdsapiserver" 0.5 80

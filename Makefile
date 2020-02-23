@@ -33,15 +33,27 @@ prebuild:
 
 .PHONY:osdsapiserver osdsctl docker test protoc goimports
 
+osdsdock:
+	go build -ldflags '-w -s' -o $(BUILD_DIR)/bin/osdsdock github.com/opensds/soda-dock/cmd/osdsdock
+
+osdslet:
+	go build -ldflags '-w -s' -o $(BUILD_DIR)/bin/osdslet github.com/opensds/soda-controller/cmd/osdslet
+
 osdsapiserver:
 	go build -ldflags '-w -s' -o $(BUILD_DIR)/bin/osdsapiserver github.com/opensds/soda-apiserver/cmd/osdsapiserver
 
 osdsctl:
 	go build -ldflags '-w -s' -o $(BUILD_DIR)/bin/osdsctl github.com/opensds/soda-apiserver/osdsctl
 
+# metricexporter:
+# 	go build -ldflags '-w -s' -o $(BUILD_DIR)/bin/lvm_exporter github.com/opensds/opensds/contrib/exporters/lvm_exporter
 
 docker: build
+	cp $(BUILD_DIR)/bin/osdsdock ./cmd/osdsdock
+	cp $(BUILD_DIR)/bin/osdslet ./cmd/osdslet
 	cp $(BUILD_DIR)/bin/osdsapiserver ./cmd/osdsapiserver
+	docker build cmd/osdsdock -t opensdsio/opensds-dock:latest
+	docker build cmd/osdslet -t opensdsio/opensds-controller:latest
 	docker build cmd/osdsapiserver -t opensdsio/opensds-apiserver:latest
 
 test: build

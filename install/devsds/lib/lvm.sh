@@ -179,7 +179,7 @@ pool:
         latency: 5ms
 OPENSDS_LVM_CONFIG_DOC
 
-cat >> $OPENSDS_CONFIG_DIR/opensds.conf << OPENSDS_LVM_GLOBAL_CONFIG_DOC
+cat >> $OPENSDS_CONFIG_DIR/soda-apiserver.conf << OPENSDS_LVM_GLOBAL_CONFIG_DOC
 [lvm]
 name = lvm
 description = LVM Test
@@ -220,7 +220,7 @@ pool:
         latency: 5ms
 OPENSDS_FILE_CONFIG_DOC
 
-cat >> $OPENSDS_CONFIG_DIR/opensds.conf << OPENSDS_FILE_GLOBAL_CONFIG_DOC
+cat >> $OPENSDS_CONFIG_DIR/soda-apiserver.conf << OPENSDS_FILE_GLOBAL_CONFIG_DOC
 [nfs]
 name = nfs
 description = NFS LVM TEST
