@@ -135,7 +135,7 @@ func (v *VolumePortal) CreateVolume() {
 			errorMsg.GetCode(), errorMsg.GetDescription())
 		return
 	}
-    fmt.Println("opt==:",opt)
+
 	return
 }
 
@@ -283,7 +283,7 @@ func (v *VolumePortal) ExtendVolume() {
 			errorMsg.GetCode(), errorMsg.GetDescription())
 		return
 	}
-	fmt.Println("opt==:",opt)
+
 	return
 }
 
@@ -359,7 +359,7 @@ func (v *VolumePortal) DeleteVolume() {
 			errorMsg.GetCode(), errorMsg.GetDescription())
 		return
 	}
-	fmt.Println("opt==:",opt)
+
 	return
 }
 

@@ -33,21 +33,25 @@ func init() {
 			// Extend Volume
 			beego.NSRouter("/volumes/:volumeId/resize", controllers.NewVolumePortal(), "post:ExtendVolume"),
 
+			// Creates, shows, lists, unpdates and deletes attachment.
+			beego.NSRouter("/attachments", controllers.NewVolumeAttachmentPortal(), "post:CreateVolumeAttachment;get:ListVolumeAttachments"),
+			beego.NSRouter("/attachments/:attachmentId", controllers.NewVolumeAttachmentPortal(), "get:GetVolumeAttachment;put:UpdateVolumeAttachment;delete:DeleteVolumeAttachment"),
+
 			// Snapshot is a point-in-time copy of the data that a volume contains.
 			// Creates, shows, lists, unpdates and deletes snapshot.
 			beego.NSRouter("/snapshots", controllers.NewVolumeSnapshotPortal(), "post:CreateVolumeSnapshot;get:ListVolumeSnapshots"),
 			beego.NSRouter("/snapshots/:snapshotId", controllers.NewVolumeSnapshotPortal(), "get:GetVolumeSnapshot;put:UpdateVolumeSnapshot;delete:DeleteVolumeSnapshot"),
 
-			//// Creates, shows, lists, unpdates and deletes replication.
-			//beego.NSRouter("/replications", controllers.NewReplicationPortal(), "post:CreateReplication;get:ListReplications"),
-			//beego.NSRouter("/replications/detail", controllers.NewReplicationPortal(), "get:ListReplicationsDetail"),
-			//beego.NSRouter("/replications/:replicationId", controllers.NewReplicationPortal(), "get:GetReplication;put:UpdateReplication;delete:DeleteReplication"),
-			//beego.NSRouter("/replications/:replicationId/enable", controllers.NewReplicationPortal(), "post:EnableReplication"),
-			//beego.NSRouter("/replications/:replicationId/disable", controllers.NewReplicationPortal(), "post:DisableReplication"),
-			//beego.NSRouter("/replications/:replicationId/failover", controllers.NewReplicationPortal(), "post:FailoverReplication"),
-			//// Volume group contains a list of volumes that are used in the same application.
-			//beego.NSRouter("/volumeGroups", controllers.NewVolumeGroupPortal(), "post:CreateVolumeGroup;get:ListVolumeGroups"),
-			//beego.NSRouter("/volumeGroups/:groupId", controllers.NewVolumeGroupPortal(), "put:UpdateVolumeGroup;get:GetVolumeGroup;delete:DeleteVolumeGroup"),
+			// Creates, shows, lists, unpdates and deletes replication.
+			beego.NSRouter("/replications", controllers.NewReplicationPortal(), "post:CreateReplication;get:ListReplications"),
+			beego.NSRouter("/replications/detail", controllers.NewReplicationPortal(), "get:ListReplicationsDetail"),
+			beego.NSRouter("/replications/:replicationId", controllers.NewReplicationPortal(), "get:GetReplication;put:UpdateReplication;delete:DeleteReplication"),
+			beego.NSRouter("/replications/:replicationId/enable", controllers.NewReplicationPortal(), "post:EnableReplication"),
+			beego.NSRouter("/replications/:replicationId/disable", controllers.NewReplicationPortal(), "post:DisableReplication"),
+			beego.NSRouter("/replications/:replicationId/failover", controllers.NewReplicationPortal(), "post:FailoverReplication"),
+			// Volume group contains a list of volumes that are used in the same application.
+			beego.NSRouter("/volumeGroups", controllers.NewVolumeGroupPortal(), "post:CreateVolumeGroup;get:ListVolumeGroups"),
+			beego.NSRouter("/volumeGroups/:groupId", controllers.NewVolumeGroupPortal(), "put:UpdateVolumeGroup;get:GetVolumeGroup;delete:DeleteVolumeGroup"),
 		)
 	beego.AddNamespace(blockns)
 }
