@@ -3873,11 +3873,11 @@ var fileDescriptor_d10048d769ba1c4e = []byte{
 
 // Reference imports to suppress errors if they are not otherwise used.
 var _ context.Context
-var _ grpc.ClientConnInterface
+var _ grpc.ClientConn
 
 // This is a compile-time assertion to ensure that this generated file
 // is compatible with the grpc package it is being compiled against.
-const _ = grpc.SupportPackageIsVersion6
+const _ = grpc.SupportPackageIsVersion3
 
 // ControllerClient is the client API for Controller service.
 //
@@ -3916,10 +3916,10 @@ type ControllerClient interface {
 }
 
 type controllerClient struct {
-	cc grpc.ClientConnInterface
+	cc *grpc.ClientConn
 }
 
-func NewControllerClient(cc grpc.ClientConnInterface) ControllerClient {
+func NewControllerClient(cc *grpc.ClientConn) ControllerClient {
 	return &controllerClient{cc}
 }
 
@@ -4522,10 +4522,10 @@ type ProvisionDockClient interface {
 }
 
 type provisionDockClient struct {
-	cc grpc.ClientConnInterface
+	cc *grpc.ClientConn
 }
 
-func NewProvisionDockClient(cc grpc.ClientConnInterface) ProvisionDockClient {
+func NewProvisionDockClient(cc *grpc.ClientConn) ProvisionDockClient {
 	return &provisionDockClient{cc}
 }
 
@@ -5110,10 +5110,10 @@ type FileShareControllerClient interface {
 }
 
 type fileShareControllerClient struct {
-	cc grpc.ClientConnInterface
+	cc *grpc.ClientConn
 }
 
-func NewFileShareControllerClient(cc grpc.ClientConnInterface) FileShareControllerClient {
+func NewFileShareControllerClient(cc *grpc.ClientConn) FileShareControllerClient {
 	return &fileShareControllerClient{cc}
 }
 
@@ -5374,10 +5374,10 @@ type FileShareDockClient interface {
 }
 
 type fileShareDockClient struct {
-	cc grpc.ClientConnInterface
+	cc *grpc.ClientConn
 }
 
-func NewFileShareDockClient(cc grpc.ClientConnInterface) FileShareDockClient {
+func NewFileShareDockClient(cc *grpc.ClientConn) FileShareDockClient {
 	return &fileShareDockClient{cc}
 }
 
@@ -5630,10 +5630,10 @@ type AttachDockClient interface {
 }
 
 type attachDockClient struct {
-	cc grpc.ClientConnInterface
+	cc *grpc.ClientConn
 }
 
-func NewAttachDockClient(cc grpc.ClientConnInterface) AttachDockClient {
+func NewAttachDockClient(cc *grpc.ClientConn) AttachDockClient {
 	return &attachDockClient{cc}
 }
 
