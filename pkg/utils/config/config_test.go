@@ -67,7 +67,7 @@ type TestConfig struct {
 
 func TestFunctionAllType(t *testing.T) {
 	conf := &TestConfig{}
-	initConf("testdata/opensds.conf", conf)
+	initConf("testdata/soda-apiserver.conf", conf)
 	if conf.TestStruct.Bool != true {
 		t.Error("Test TestStuct Bool error")
 	}
@@ -261,7 +261,7 @@ func TestFunctionDefaultValue(t *testing.T) {
 }
 
 func TestOpensdsConfig(t *testing.T) {
-	initConf("testdata/opensds.conf", CONF)
+	initConf("testdata/soda-apiserver.conf", CONF)
 
 	if CONF.OsdsApiServer.ApiEndpoint != "localhost:50040" {
 		t.Error("Test OsdsApiServer.ApiEndpoint error")

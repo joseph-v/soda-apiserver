@@ -17,7 +17,7 @@ Firstly, you need to configure some global files with command below:
 ```shell
 export BackendType="sample" # 'sample' is the default option, currently also support 'lvm'
 
-mkdir -p /etc/opensds && sudo cat > /etc/opensds/opensds.conf <<OPENSDS_GLOABL_CONFIG_DOC
+mkdir -p /etc/opensds && sudo cat > /etc/opensds/soda-apiserver.conf <<OPENSDS_GLOABL_CONFIG_DOC
 [osdsapiserver]
 api_endpoint = 0.0.0.0:50040
 auth_strategy = keystone

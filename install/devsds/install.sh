@@ -142,7 +142,7 @@ source $TOP_DIR/sdsrc
 
 osds::backendlist_check $OPENSDS_BACKEND_LIST
 
-# clean up opensds.conf
+# clean up soda-apiserver.conf
 :> $OPENSDS_CONFIG_DIR/soda-apiserver.conf
 
 # Install service which is enabled.
