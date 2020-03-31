@@ -23,6 +23,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/opensds/soda-apiserver/pkg/utils/constants"
 
 	log "github.com/golang/glog"
 	"github.com/opensds/soda-apiserver/pkg/api/policy"
@@ -112,7 +113,7 @@ func (v *VolumeAttachmentPortal) CreateVolumeAttachment() {
 	var protocol = pol.Extras.IOConnectivity.AccessProtocol
 	if protocol == "" {
 		// Default protocol is iscsi
-		protocol = "iscsi"
+		protocol = constants.ISCSIProtocol
 	}
 	attachment.AccessProtocol = protocol
 
