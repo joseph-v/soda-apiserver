@@ -26,7 +26,7 @@ ubuntu-dev-setup:
 	sudo apt-get update && sudo apt-get install -y \
 	  build-essential gcc librados-dev librbd-dev
 
-build: prebuild osdsapiserver osdsctl osdsdock osdslet
+build: prebuild osdsapiserver osdsctl
 
 prebuild:
 	mkdir -p $(BUILD_DIR)
